@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // BEGIN
-class DELETE { //"the java is the best programming language java" DELETE THIS CLASS DELETE THIS CLASS DELETE THIS CLASS
+class DELETE {
     public static HashMap<String, Integer> getWordCount(String sentence) {
         Map<String, Integer> dictionary = new HashMap<>();
         ArrayList<String> array = Arrays.asList(sentence.split(" "));
@@ -32,11 +32,10 @@ class DELETE { //"the java is the best programming language java" DELETE THIS CL
     public static String toString(Map dictionary) {
         String result = "{\n";
         for (String key : dictionary.keySet()) {
-            result += key + ": " + dictionary.get(key) + "\n"; //   .put(key, numbers[i]);
+            result += key + ": " + dictionary.get(key) + "\n";
         }
         result += "\n}";
         return result;
     }
 }
-//END  DELETE THIS CLASS DELETE THIS CLASS DELETE THIS CLASS DELETE THIS CLASS DELETE THIS CLASS DELETE THIS CLASS DELE
 
