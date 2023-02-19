@@ -1,41 +1,49 @@
 package exercise;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-// BEGIN
-class DELETE {
-    public static HashMap<String, Integer> getWordCount(String sentence) {
+
+class App {
+    public static Map<String, Integer> getWordCount(String sentence) {
         Map<String, Integer> dictionary = new HashMap<>();
-        ArrayList<String> array = Arrays.asList(sentence.split(" "));
-        List<Integer> numbers = new ArrayList<>();
-        for (int i = 0; i < array.size(); i++) {
-            index = 1;
-            String word = array.get(i);
-            for (int k = 0; k < array.size(); k++) {
-                if (array[i].equals(array[k] && i != k)) {
-                    index += 1;
-                    array.remove(array[k]);
-                }
-                numbers[i] = index;
-            }
+        if (sentence.equals("")) {
+            return dictionary;
         }
-        int i = 0;
-        for (String key : dictionary.keySet()) {
-            key = array[i];
-            dictionary.put(key, numbers[i]);
-            i += 1;
+
+        String[] splittedSent = sentence.split(" ");
+        List<String> array = new ArrayList<>(0);
+        Collections.addAll(array, splittedSent);
+
+        for (int i = 0; i < array.size(); i++) {
+            Integer num = Collections.frequency(array, array.get(i)); //getWordEntries(array, array.get(i));
+            dictionary.put(array.get(i), num);
         }
         return dictionary;
     }
 
-    public static String toString(Map dictionary) {
-        String result = "{\n";
-        for (String key : dictionary.keySet()) {
-            result += key + ": " + dictionary.get(key) + "\n";
+    public static Integer getWordEntries(List<String> arrayList, String word) {
+        int index = 0;
+        for (int k = 0; k < arrayList.size(); k++) {
+            if (arrayList.get(k).equals(word) && !arrayList.get(k).equals("")) {
+                index += 1;
+                arrayList.set(k, "");
+            }
         }
-        result += "\n}";
-        return result;
+        return index;
+    }
+
+    public static String toString(Map<String, Integer> dictionary) {
+        var result = new StringBuilder("{");
+        if (dictionary.isEmpty()) {
+            return "{}";
+        }
+        for (Map.Entry<String, Integer> dict: dictionary.entrySet()) {
+            result.append("\n  ");
+            result.append(dict.getKey());
+            result.append(": ");
+            result.append(dict.getValue());
+        }
+        result.append("\n}");
+        return result.toString();
     }
 }
-
