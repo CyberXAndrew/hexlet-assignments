@@ -22,16 +22,17 @@ class AppTest {
         };
         assertThat(expectedArray).isEqualTo(App.enlargeArrayImage(originalArray));
     }
-//    @Test
-//    public void appEmptynessTest() {
-//        String[][] empty = {{}, {}};
-//        assertThat(empty).isEqualTo(enlargeArrayImage(new String[][]));
-//    }
-//
-//    @Test
-//    public void appNullTest() {
-//        String[][] nullArray = {{null}, {null}};
-//        assertThat(nullArray).isEqualTo(enlargeArrayImage(new String[][]));
-//    }
+    @Test
+    public void appEmptynessTest() {
+        String[][] empty = {{}, {}};
+        assertThat(empty).isEqualTo(App.enlargeArrayImage(new String[][] {{}}));
+    }
+
+    @Test
+    public void appNullTest() {
+        String[][] nullArray = {{null, null}, {null, null}};
+        assertThat(nullArray).isEqualTo(App.enlargeArrayImage(new String[][] {{null}}));
+    }
 }
+
 // END
