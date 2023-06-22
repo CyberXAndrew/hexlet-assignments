@@ -26,7 +26,6 @@ public class App {
         Context ctx = app.addContext("", new File(".").getAbsolutePath());
 
         // BEGIN
-        // Зарегистрируйте в контейнере сервлет WelcomeServlet, так чтобы он обрабатывал запросы по корневому пути /
         app.addServlet(ctx, "WelcomeServlet", new WelcomeServlet());
         ctx.addServletMappingDecoded("/", "WelcomeServlet");
         // END
