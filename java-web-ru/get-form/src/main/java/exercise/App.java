@@ -2,7 +2,6 @@ package exercise;
 
 import io.javalin.Javalin;
 
-import java.util.ArrayList;
 import java.util.List;
 import exercise.model.User;
 import exercise.dto.users.UsersPage;
@@ -20,7 +19,7 @@ public final class App {
 
         // BEGIN
         app.get("/users", ctx -> {
-            var term = ctx.pathParam("term");
+            var term = ctx.queryParam("term");
             List<User> result;
             if (term != null) {
                 result = USERS.stream()
@@ -29,7 +28,8 @@ public final class App {
                 var page = new UsersPage(result, term);
                 ctx.render("users/index.jte", Collections.singletonMap("users", page));
             } else {
-                var page = new UsersPage(USERS, term);
+                result = USERS;
+                var page = new UsersPage(result, null);
                 ctx.render("users/index.jte", Collections.singletonMap("users", page));
             }
         });

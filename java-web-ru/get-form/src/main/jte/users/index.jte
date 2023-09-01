@@ -17,14 +17,19 @@
 <body>
     <div>
         <form action="/users" method="get">
-            <input type="search" name="term" value="${users.getTerm()}">
+            <label>
+                Поиск по Пользователям:
+                <input type="search" name="term" value="${users.getTerm()}">
+            </label>
             <input type="submit" value="Search!">
         </form>
         <br>
         @if(users.getUsers() != null)
             <ol>
             @for(User user : users.getUsers())
-                <a href="/users/${user.getId()}">${user.getFirstName()} ${user.getLastName()}</a>
+                <li>
+                    <a href="/users/${user.getId()}">${user.getFirstName()} ${user.getLastName()}</a>
+                </li>
             @endfor
             </ol>
         @endif
