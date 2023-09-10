@@ -1,5 +1,4 @@
 package exercise;
-
 // BEGIN
 import io.javalin.Javalin;
 // END
@@ -9,7 +8,9 @@ public final class App {
     public static Javalin getApp() {
         // BEGIN
         var app = Javalin.create(config -> config.plugins.enableDevLogging());
+
         app.get("/welcome", ctx -> ctx.result("Welcome to Hexlet!"));
+
         return app;
         // END
     }
