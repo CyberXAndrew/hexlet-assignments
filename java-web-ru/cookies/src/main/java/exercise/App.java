@@ -3,7 +3,6 @@ package exercise;
 import io.javalin.Javalin;
 import exercise.controller.UsersController;
 import exercise.util.NamedRoutes;
-import io.javalin.http.Context;
 
 public final class App {
 

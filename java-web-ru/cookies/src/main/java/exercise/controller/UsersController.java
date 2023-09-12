@@ -1,12 +1,11 @@
 package exercise.controller;
 
-import org.apache.commons.lang3.StringUtils;
+//import org.apache.commons.lang3.StringUtils;
 import exercise.util.Security;
 
 import exercise.model.User;
 import exercise.util.NamedRoutes;
 import java.util.Collections;
-import java.util.Objects;
 
 import exercise.repository.UserRepository;
 
@@ -28,9 +27,6 @@ public class UsersController {
 
         String token = Security.generateToken();
         ctx.cookie("token", token);
-
-        ctx.cookie("token", Security.generateToken());
-        String token = ctx.cookie("token");
 
         User newUser = new User(firstName, lastName, email, password, token);
         UserRepository.save(newUser);
