@@ -32,17 +32,18 @@ public class SessionsController {
         String name = ctx.formParam("name");
         String enteredPassword = encrypt(ctx.formParam("password"));
 
-        if (UsersRepository.existsByName(name)) {
-            User user = UsersRepository.findByName(name);
-            String usersPassword = user.getPassword();
-            int hashcode1 = Objects.hashCode(enteredPassword);
-            int hashcode2 = Objects.hashCode(usersPassword);
-            if (hashcode1 == hashcode2 && name.equals(user.getName())) {
+        User user = UsersRepository.findByName(name);
+        if (user != null && Objects.hashCode(user.getPassword()) == Objects.hashCode(enteredPassword) ) {
+
+//            String usersPassword = user.getPassword();
+//            int hashcode1 = Objects.hashCode(enteredPassword);
+//            int hashcode2 = Objects.hashCode(usersPassword);
+//            if (hashcode1 == hashcode2 && name.equals(user.getName())) {
                 ctx.sessionAttribute("currentUser", name);
                 ctx.redirect(NamedRoutes.rootPath());
-            } else {
-                rebuildLogin(name, ctx);
-            }
+//            } else {
+//                rebuildLogin(name, ctx);
+//            }
         }
         else {
             rebuildLogin(name, ctx);
