@@ -18,9 +18,6 @@ public class SessionsController {
     // BEGIN
     public static void root(Context ctx) {
         String name = ctx.sessionAttribute("currentUser");
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.readValue(name, Object.class);
-//        var page = new MainPage(objectMapper);
         var page = new MainPage(name);
         ctx.render("index.jte", Collections.singletonMap("page", page));
     }
@@ -30,34 +27,21 @@ public class SessionsController {
 
     public static void login(Context ctx) {
         String name = ctx.formParam("name");
-        String enteredPassword = encrypt(ctx.formParam("password"));
-
+        String enteredPassword = encrypt(Objects.requireNonNull(ctx.formParam("password")));
         User user = UsersRepository.findByName(name);
-        if (user != null && Objects.hashCode(user.getPassword()) == Objects.hashCode(enteredPassword) ) {
-
-//            String usersPassword = user.getPassword();
-//            int hashcode1 = Objects.hashCode(enteredPassword);
-//            int hashcode2 = Objects.hashCode(usersPassword);
-//            if (hashcode1 == hashcode2 && name.equals(user.getName())) {
-                ctx.sessionAttribute("currentUser", name);
-                ctx.redirect(NamedRoutes.rootPath());
-//            } else {
-//                rebuildLogin(name, ctx);
-//            }
+        if (user != null && Objects.hashCode(user.getPassword()) == Objects.hashCode(enteredPassword)) {
+            ctx.sessionAttribute("currentUser", name);
+            ctx.redirect(NamedRoutes.rootPath());
         }
         else {
-            rebuildLogin(name, ctx);
+            LoginPage page = new LoginPage(name, "Wrong username or password");
+            ctx.render("build.jte", Collections.singletonMap("page", page));
         }
     }
 
     public static void logout(Context ctx) {
         ctx.sessionAttribute("currentUser", null);
         ctx.redirect(NamedRoutes.rootPath());
-    }
-
-    public static void rebuildLogin(String name, Context ctx) {
-        LoginPage page = new LoginPage(name, "Wrong username or password");
-        ctx.render("build.jte", Collections.singletonMap("page", page));
     }
     // END
 }
