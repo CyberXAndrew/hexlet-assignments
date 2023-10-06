@@ -16,11 +16,11 @@ public class Application {
             if (method.isAnnotationPresent(Inspect.class)) {
                 try {
                     String methodName = method.getName();
-                    var methodType = method.getReturnType();
-                    String typeShortName =
-                            methodType.equals(String.class) ? "String" : methodType.getTypeName();
+                    var methodType = method.getReturnType().getSimpleName();
+//                    String typeShortName =
+//                            methodType.equals(String.class) ? "String" : methodType.getTypeName();
                     System.out.printf("Method %s returns a value of type %s%n", methodName,
-                            typeShortName);
+                            methodType);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
