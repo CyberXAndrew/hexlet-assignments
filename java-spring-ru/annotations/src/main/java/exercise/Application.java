@@ -2,10 +2,7 @@ package exercise;
 
 import exercise.model.Address;
 import exercise.annotation.Inspect;
-
-import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
 
 public class Application {
     public static void main(String[] args) {
@@ -16,11 +13,12 @@ public class Application {
             if (method.isAnnotationPresent(Inspect.class)) {
                 try {
                     String methodName = method.getName();
-                    var methodType = method.getReturnType().getSimpleName();
+                    var methodType = method.getReturnType();
+                    String returnType = methodType.getSimpleName();
 //                    String typeShortName =
 //                            methodType.equals(String.class) ? "String" : methodType.getTypeName();
                     System.out.printf("Method %s returns a value of type %s%n", methodName,
-                            methodType);
+                            returnType);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
