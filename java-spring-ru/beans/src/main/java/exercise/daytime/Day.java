@@ -10,10 +10,9 @@ public class Day implements Daytime {
     }
 
     // BEGIN
-    @Scope("prototype")
     @PostConstruct
-    public String notifyCreation() {
-        return "Bean was created";
+    public void notifyCreation() {
+        System.out.println("Bean Day is initialized");
     }
     // END
 }
