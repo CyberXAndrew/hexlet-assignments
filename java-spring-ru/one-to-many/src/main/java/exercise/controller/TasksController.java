@@ -7,6 +7,8 @@ import exercise.dto.TaskDTO;
 import exercise.dto.TaskUpdateDTO;
 import exercise.mapper.TaskMapper;
 import exercise.model.Task;
+import exercise.model.User;
+import exercise.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +29,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/tasks")
 public class TasksController {
     // BEGIN
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
@@ -52,9 +56,11 @@ public class TasksController {
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDTO create(@Valid @RequestBody TaskCreateDTO taskCreateDTO) {
         if (taskRepository.findByTitle(taskCreateDTO.getTitle()).isPresent()) { // проверка по title
-            throw new ResourceNotFoundException("Task with id " + taskCreateDTO.getAssigneeId() + " not found");
+            throw new ResourceNotFoundException("Task with title " + taskCreateDTO.getTitle() + " not found");
         }
         Task task = taskMapper.map(taskCreateDTO);
+        User assignee = userRepository.findById(taskCreateDTO.getAssigneeId()).get();
+        task.setAssignee(assignee);
         taskRepository.save(task);
         return taskMapper.map(task);
     }
@@ -63,8 +69,10 @@ public class TasksController {
     @ResponseStatus(HttpStatus.OK)
     public TaskDTO update(@PathVariable long id, @Valid @RequestBody TaskUpdateDTO taskUpdateDTO) {
         Task task = taskRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Task with title " + taskUpdateDTO.getTitle() + " not found"));
+                () -> new ResourceNotFoundException("Task with id " + id + " not found"));
         taskMapper.update(taskUpdateDTO, task);
+        User assignee = userRepository.findById(taskUpdateDTO.getAssigneeId()).get();
+        task.setAssignee(assignee);
         taskRepository.save(task);
         return taskMapper.map(task);
     }

@@ -2,11 +2,7 @@ package exercise.mapper;
 
 import exercise.dto.*;
 import exercise.model.Task;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -15,8 +11,12 @@ import org.mapstruct.ReportingPolicy;
 )
 public abstract class TaskMapper {
     // BEGIN
+    @Mapping(target = "assignee.id", source = "assigneeId")
     public abstract Task map(TaskCreateDTO taskCreateDTO);
+
+    @Mapping(target = "assigneeId", source = "assignee.id")
     public abstract TaskDTO map(Task task);
+//    @Mapping(target = "assignee.id", source = "assigneeId")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task task);
     // END
 
