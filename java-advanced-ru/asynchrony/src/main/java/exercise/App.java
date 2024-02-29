@@ -3,71 +3,53 @@ package exercise;
 import javax.sound.midi.Soundbank;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.NoSuchFileException;
+import java.nio.file.*;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.nio.file.Paths;
-import java.nio.file.Path;
-import java.nio.file.Files;
 import java.util.concurrent.ExecutionException;
 
 class App {
 
     // BEGIN
-    public static CompletableFuture<String> unionFiles(String filepath1, String filepath2, String filepath3)
-            throws IOException, InterruptedException, ExecutionException {
-//            Path path1 = Paths.get(filepath1).toAbsolutePath();
-//            Path path2 = Paths.get(filepath2).toAbsolutePath();
+    private static Path getAbsolutePath(String filepath) {return Paths.get(filepath).toAbsolutePath().normalize();}
+    public static CompletableFuture<String> unionFiles(String filepath1, String filepath2, String filepath3) {
 
         CompletableFuture<String> file1Future = CompletableFuture.supplyAsync(() -> {
+            String content;
             try {
-                Path path1 = Paths.get(filepath1).toAbsolutePath();
-                if (!Files.exists(path1)) {
-                    throw new NoSuchFileException("NoSuchFileException");
-                }
-                return Files.readString(path1);
+                content = Files.readString(getAbsolutePath(filepath1));
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(e.getMessage());
-                return "file1Future error ||";
+                throw new RuntimeException(e);
             }
+            return content;
         });
-        file1Future.get();
+//        file1Future.get();
 
         CompletableFuture<String> file2Future = CompletableFuture.supplyAsync(() -> {
+            String content;
             try {
-                Path path2 = Paths.get(filepath2).toAbsolutePath();
-                if (!Files.exists(path2)) {
-                    throw new NoSuchFileException("NoSuchFileException");
-                }
-                return Files.readString(path2);
+                content = Files.readString(getAbsolutePath(filepath2));
             } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(e.getMessage());
-                return "file2Future error ||";
+                throw new RuntimeException(e);
             }
+            return content;
         });
-        file2Future.get();
+//        file2Future.get();
 
-        CompletableFuture<String> future3 = file1Future.thenCombine(file2Future, (content1 , content2) -> {
+        return file1Future.thenCombine(file2Future, (content1 , content2) -> {
+            String resultContent = content1 + content2;
             try {
-                String resultContent = content1 + content2;
-                Path path3 = Paths.get(filepath3).toAbsolutePath();
-                if (!Files.exists(path3)) {
-                    Files.createFile(path3);
-                }
-                Path path = Files.writeString(path3, resultContent);
+                Path path = Files.writeString(getAbsolutePath(filepath3), resultContent, StandardOpenOption.CREATE);
                 return Files.readString(path);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }).exceptionally(ex -> {
             System.out.println("Exception was thrown: " + ex.getMessage());
-            ex.printStackTrace();
-            return null;
+            return "file3 mistake";
         });
-        return future3;
     }
+
 
     public static CompletableFuture<Long> getDirectorySize(String directoryPath) throws ExecutionException, InterruptedException {
         CompletableFuture<Long> future = CompletableFuture.supplyAsync(() -> {
@@ -86,7 +68,6 @@ class App {
                 throw new RuntimeException(e);
             }
         });
-
         future.get();
 
         return future;
