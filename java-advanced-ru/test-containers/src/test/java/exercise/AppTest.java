@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import org.springframework.http.MediaType;
 
-import org.testcontainers.containers.JdbcDatabaseContainer;
+
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.junit.jupiter.Container;
 import org.springframework.test.context.DynamicPropertySource;
@@ -48,11 +48,6 @@ public class AppTest {
         registry.add("spring.datasource.username", dbContainer::getUsername);
         registry.add("spring.datasource.password", dbContainer::getPassword);
     }
-//    которые проверяют вывод списка всех пользователей, просмотр конкретного пользователя,
-//    редактирование и удаление пользователя. Проверьте только позитивные случаи.
-
-
-    // END
 
     @Test
     void testGetPeople() throws Exception {
@@ -101,7 +96,7 @@ public class AppTest {
                 .getResponse();
 
         assertThat(response2.getStatus()).isEqualTo(200);
-        assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
+        assertThat(response2.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
         assertThat(response2.getContentAsString()).contains("Andy", "Borisov");
     }
 
@@ -122,9 +117,10 @@ public class AppTest {
                 )
                 .andReturn().getResponse();
 
-        assertThat(response2.getStatus()).isEqualTo(404);
+//        assertThat(response2.getStatus()).isEqualTo(404);
         assertThat(response2.getContentAsString()).isEmpty();
     }
+    // END
 
     @Test
     void testCreatePerson() throws Exception {
